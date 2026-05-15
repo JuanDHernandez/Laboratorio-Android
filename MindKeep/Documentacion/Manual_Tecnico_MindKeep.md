@@ -1,9 +1,13 @@
 
 
 Manual Técnico: Proyecto MindKeep
+
 Estado del Proyecto: Fase de Desarrollo Inicial (Login y Estructura)
+
 Fecha: 14 de Mayo, 2026
+
 Desarrollador: Juan D. Hernández
+
 
 1. Configuración del Entorno
 Para asegurar la compatibilidad y el rendimiento, el proyecto utiliza las siguientes especificaciones:
@@ -16,6 +20,7 @@ SDK Mínimo: API 24 (Android 7.0 Nougat)
 
 Control de Versiones: Git / GitHub
 
+
 2. Estructura del Proyecto
 Se ha implementado una jerarquía de carpetas para separar las responsabilidades del sistema:
 
@@ -24,6 +29,7 @@ Codigo: Contiene el proyecto de Android Studio con el código fuente en Kotlin.
 Documentacion: Almacena este manual y la bitácora de cambios.
 
 Recursos: Repositorio de activos gráficos, iconos y elementos multimedia.
+
 
 3. Bitácora de Desarrollo (14 de Mayo)
 Sesión de la Mañana: Inicio y Configuración
@@ -39,6 +45,7 @@ Depuración XML: Resolución de errores de restricciones (Constraints) y jerarqu
 Accesibilidad: Implementación de altura mínima de 48dp en elementos interactivos según estándares de Google.
 
 Interfaz: Finalización del archivo activity_main.xml libre de errores de sintaxis.
+
 
 4. Lógica de Control y Validación
 Implementación funcional del módulo de acceso y gestión de datos de entrada.
