@@ -6,7 +6,7 @@ MindKeep es una aplicación nativa de Android diseñada para la gestión eficien
 
 ---
 
-##Importancia de los Wireframes en el Desarrollo de Software
+## Importancia de los Wireframes en el Desarrollo de Software
 
 El desarrollo de software moderno exige que la experiencia de usuario (UX) y la interfaz (UI) se definan firmemente antes de la escritura del código fuente. La integración de wireframes en este proyecto responde a tres pilares fundamentales:
 
@@ -16,7 +16,7 @@ El desarrollo de software moderno exige que la experiencia de usuario (UX) y la 
 
 ---
 
-##Utilidad de los Wireframes Específicamente en MindKeep
+## Utilidad de los Wireframes Específicamente en MindKeep
 
 Para **MindKeep**, los wireframes no fueron solo bocetos, sino el mapa de ruta técnico para implementar las siguientes funcionalidades críticas:
 
@@ -37,7 +37,7 @@ Para **MindKeep**, los wireframes no fueron solo bocetos, sino el mapa de ruta t
 
 ---
 
-##Flujo de Navegación Diseñado
+## Flujo de Navegación Diseñado
 
 El prototipo sigue una arquitectura de navegación lineal y segura:
 `Login` ➔ `Mis Notas (Dashboard)` ➔ `Ver/Editar Nota`
