@@ -1,6 +1,6 @@
 
 
-#MindKeep — Android Local
+# MindKeep — Android Local
 
 MindKeep es una aplicación nativa de Android diseñada para la gestión eficiente y segura de notas personales, recordatorios y tareas académicas de manera **100% local**. Este repositorio documenta la fase de diseño UI/UX y la arquitectura de navegación inicial mediante Wireframes de alta fidelidad.
 
