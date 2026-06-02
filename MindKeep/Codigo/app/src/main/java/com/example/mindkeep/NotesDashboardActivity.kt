@@ -1,22 +1,22 @@
 package com.example.mindkeep
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NotesDashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Le indicamos que use el diseño visual que verificaste hace un momento
         setContentView(R.layout.activity_notes_dashboard)
 
-        // Enlazamos el botón flotante del "+" por su ID
+        // Enlazamos el botón flotante por su ID definido en el XML
         val fabAdd = findViewById<FloatingActionButton>(R.id.fabAddNote)
 
-        // Acción temporal para cuando se presione el botón "+"
+        // Acción: Navegar hacia la actividad del formulario
         fabAdd.setOnClickListener {
-            Toast.makeText(this, "Función para crear nota próximamente", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, NoteFormActivity::class.java)
+            startActivity(intent)
         }
     }
 }

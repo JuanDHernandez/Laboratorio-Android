@@ -23,6 +23,7 @@
         <activity android:name=".RegisterActivity" android:exported="false" />
         <activity android:name=".ForgotPasswordActivity" android:exported="false" />
         <activity android:name=".NotesDashboardActivity" android:exported="false" />
+        <activity android:name=".NoteFormActivity" android:exported="false" />
     </application>
 
 </manifest>
