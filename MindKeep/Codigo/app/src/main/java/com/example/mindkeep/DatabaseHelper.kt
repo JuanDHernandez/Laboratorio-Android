@@ -85,4 +85,36 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         return count > 0
     }
+
+    // Método para insertar una nueva nota asociada a un usuario específico
+    fun insertNote(userId: Int, title: String, content: String, date: String): Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COL_NOTE_USER_REF, userId)
+        values.put(COL_NOTE_TITLE, title)
+        values.put(COL_NOTE_CONTENT, content)
+        values.put(COL_NOTE_DATE, date)
+
+        val result = db.insert(TABLE_NOTES, null, values)
+        db.close()
+        return result
+    }
+
+    // Método para obtener todas las notas de un usuario específico
+    fun getUserNotes(userId: Int): android.database.Cursor {
+        val db = this.readableDatabase
+        val selection = "$COL_NOTE_USER_REF = ?"
+        val selectionArgs = arrayOf(userId.toString())
+
+        // Retorna el cursor con todas las filas encontradas ordenadas por ID descendente
+        return db.query(
+            TABLE_NOTES,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            "$COL_NOTE_ID DESC"
+        )
+    }
 }

@@ -10,10 +10,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+
+    // Declaramos el ayudante de la base de datos
+    private lateinit var dbHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        // Inicializamos el ayudante de la base de datos
+        dbHelper = DatabaseHelper(this)
 
         // 1. Vinculamos los componentes del nuevo diseño usando sus IDs correctos
         val edtUsuario = findViewById<EditText>(R.id.editTextUser)
@@ -24,22 +31,30 @@ class MainActivity : AppCompatActivity() {
 
         // 2. Acción para el botón de Ingresar [ Login ]
         btnIngresar.setOnClickListener {
-            val usuario = edtUsuario.text.toString()
-            val contrasena = edtContrasena.text.toString()
+            val usuario = edtUsuario.text.toString().trim()
+            val contrasena = edtContrasena.text.toString().trim()
 
             if (usuario.isEmpty() || contrasena.isEmpty()) {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "¡Conexión Exitosa! Hola $usuario", Toast.LENGTH_LONG).show()
+                // Modificación Técnica: Validamos las credenciales contra SQLite real
+                val isValid = dbHelper.checkUser(usuario, contrasena)
 
-                // ¡MODIFICADO AQUÍ!: Saltamos al Dashboard de Notas si los campos están llenos
-                val intent = Intent(this, NotesDashboardActivity::class.java)
-                startActivity(intent)
-                finish() // Cierra el Login para que no regrese con el botón de atrás del teléfono
+                if (isValid) {
+                    Toast.makeText(this, "¡Conexión Exitosa! Hola $usuario", Toast.LENGTH_LONG).show()
+
+                    // Saltamos al Dashboard de Notas si las credenciales son correctas
+                    val intent = Intent(this, NotesDashboardActivity::class.java)
+                    startActivity(intent)
+                    finish() // Cierra el Login para que no regrese con el botón de atrás del teléfono
+                } else {
+                    // Si las credenciales no existen o están mal, bloqueamos el acceso
+                    Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
-        // 3.  Al hacer clic en "Registrarse", abre la pantalla de Crear Cuenta
+        // 3. Al hacer clic en "Registrarse", abre la pantalla de Crear Cuenta
         textRegistrarse.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
