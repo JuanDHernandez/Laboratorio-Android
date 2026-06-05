@@ -34,7 +34,7 @@ Este archivo registra el progreso histórico, las mejoras aplicadas sobre el có
 * **Refactorización de Interfaz:** Migración de un volcado plano de texto a un contenedor estructurado basado en tarjetas (`CardView`) mediante el diseño de `item_note.xml`.
 * **Despliegue de Datos:** Implementación de `NoteAdapter.kt` para enlazar el flujo del cursor de SQLite de forma dinámica con el `RecyclerView` en el Dashboard.
 
-#### 🔹 Estabilización de la Actividad de Detalle (05 de Junio de 2026 - Hoy)
+#### 🔹 Estabilización de la Actividad de Detalle (05 de Junio de 2026)
 * **Arquitectura de Navegación Explícita:** Resolución de la referencia no encontrada en la navegación agregando el archivo lógico `NoteDetailActivity.kt` y su respectiva interfaz visual `activity_note_detail.xml`.
 * **Transferencia Segura de Datos:** Inyección de la clave primaria mediante `intent.getIntExtra("NOTE_ID", -1)` para realizar consultas parametrizadas en la base de datos local y poblar la vista de detalle.
 * **Registro en Manifiesto:** Declaración formal de la actividad con el atributo `exported="false"` para salvaguardar la ejecución interna de la pantalla.
