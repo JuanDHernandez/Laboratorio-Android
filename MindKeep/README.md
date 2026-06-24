@@ -67,6 +67,7 @@ A continuación se detalla la organización jerárquica del repositorio local y 
 ├── Documentacion/
 └── Recursos/
 
+
 ## Flujo de Diseño y Navegación Real del Sistema
 1. **Pantalla de Login (Principal) (`MainActivity.kt` / `activity_main.xml`):** Actúa como el punto de acceso principal. Contiene los campos de usuario y contraseña, el botón de ingreso y el enlace hacia el registro. Si el usuario ingresa sus credenciales correctamente, pasa directo a la pantalla de notas. Si selecciona "Registro", se abre la pantalla de creación de cuenta. Tras el éxito, destruye el Login en memoria mediante `finish()` para evitar retrocesos inseguros.
 2. **Pantalla de Registro (`RegisterActivity.kt` / `activity_register.xml`):** Formulario para la creación de nuevas cuentas que solicita usuario, contraseña y correo electrónico. Una vez creado el usuario, regresa automáticamente a la pantalla principal de Login para iniciar sesión.
