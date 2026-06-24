@@ -23,6 +23,7 @@ En el ámbito académico contemporáneo, es común que los estudiantes olviden a
 ## Estructura Física del Proyecto
 A continuación se detalla la organización jerárquica del repositorio local y la distribución de los componentes lógicos, recursos de diseño y evidencias de compilación que conforman el sistema:
 
+```text
 /home/crow/AndEjer/Universidad/Android/Proyecto_Final/MindKeep/
 ├── Avances/
 │   ├── 1_Login_Azul.png
