@@ -1,24 +1,35 @@
 # Proyecto Final – Aplicación Android: MindKeep
 
-## Introducción
-Este proyecto final corresponde al desarrollo de una aplicación móvil en Android, cuyo propósito es aplicar los conocimientos adquiridos durante el curso en un entorno práctico, realista y de alto rigor técnico. La propuesta se centra en la aplicación **MindKeep**, un sistema de Notas y Recordatorios diseñado específicamente para estudiantes y usuarios que requieren una herramienta ligera, intuitiva y ágil para organizar sus tareas diarias. El documento busca presentar la idea de manera clara, organizada y profesional, integrando la justificación de diseño con la implementación de código real, siguiendo los más altos estándares de la redacción académica en ingeniería de software.
+## Descripción del proyecto
+Este proyecto final corresponde al desarrollo de una aplicación móvil nativa en Android, cuyo propósito es aplicar los conocimientos técnicos adquiridos durante el curso en un entorno práctico, realista y de alto rigor metodológico. La plataforma, denominada MindKeep, se concibe como un sistema integrado de Notas y Recordatorios diseñado específicamente para estudiantes y usuarios que requieren una herramienta ligera, intuitiva y de alto rendimiento para organizar sus flujos de tareas diarias. El documento unifica la justificación conceptual con la implementación física del software, asegurando la consistencia entre los requisitos lógicos y el código real alojado en el repositorio.
 
-## Contexto y justificación
-En el ámbito académico contemporáneo, es común que los estudiantes olviden actividades, plazos o compromisos importantes debido a la alta carga de flujos informativos. Aunque existen aplicaciones avanzadas en el mercado, muchas de ellas incluyen funciones complejas y dependencias en la nube que saturan el rendimiento del dispositivo y comprometen la privacidad del usuario. La propuesta de este proyecto responde a esa necesidad latente al ofrecer una solución intuitiva, ligera y enfocada en lo esencial, que permita crear notas rápidas y configurar recordatorios básicos en un entorno estrictamente local. De esta manera, se consolida la práctica de programación nativa en Kotlin y el uso de Android Studio, utilizando un esquema de persistencia independiente que no requiere conectividad externa para salvaguardar los datos.
+## Exposición del problema
+En el escenario académico y profesional contemporáneo, los usuarios se enfrentan a una saturación constante de información, lo que provoca la pérdida de plazos, el olvido de compromisos críticos y una disminución en la productividad. Aunque el mercado ofrece soluciones comerciales complejas, la gran mayoría de estas herramientas introducen dependencias severas de conectividad a la nube, interfaces saturadas de publicidad y un consumo excesivo de recursos de hardware que compromete el rendimiento del terminal móvil. Adicionalmente, la centralización de notas personales en servidores externos expone la privacidad del estudiante. Esta problemática plantea la necesidad imperativa de desarrollar una alternativa de software ágil, ligera y autónoma, que opere bajo un esquema de persistencia estrictamente local para garantizar la disponibilidad inmediata y la protección de los datos.
 
-## Objetivos
-* **Objetivo General:** Desarrollar una aplicación móvil nativa en Android que permita gestionar notas personales y recordatorios de manera simple, eficiente y segura en el dispositivo.
-* **Objetivos Específicos:**
-    * Implementar funciones CRUD básicas de creación, lectura, edición y eliminación de notas mediante persistencia local.
-    * Configurar recordatorios activos integrando el subsistema de notificaciones locales de la barra de estado de Android.
-    * Diseñar una interfaz clara, responsiva y amigable orientada a la experiencia de usuario en entornos académicos.
-    * Documentar detalladamente la arquitectura y el historial de progreso en GitHub, aplicando buenas prácticas de control de versiones distribuidas.
+## Plataforma
+* Lenguaje de Programación: Kotlin (Sintaxis moderna y tipado seguro).
+* Entorno de Desarrollo (IDE): Android Studio (Configurado para compilación nativa bajo API 34).
+* Motor de Persistencia: SQLite de forma embebida, garantizando transacciones atómicas y almacenamiento relacional sin consumo de datos ni dependencias de red.
+* Entorno de Pruebas: Emulador AVD (Android Virtual Device) y terminales físicos en modo de depuración USB.
 
-## Plataforma y Requisitos Tecnológicos
-* **Lenguaje:** Kotlin (Sintaxis limpia y programación orientada a objetos).
-* **Entorno de desarrollo:** Android Studio (Configurado para compilación sobre API 34).
-* **Ejecución y Persistencia:** Local, mediante el motor de base de datos relacional SQLite, sin integración en servicios de nube para simplificar el alcance y optimizar la privacidad.
-* **Compatibilidad:** Emulador AVD (Android Virtual Device) y dispositivos físicos Android en modo de depuración.
+## Interfaz de usuario e interfaz de administrador
+* Interfaz de Usuario (Client-Side): Diseñada de forma adaptativa y limpia a través de layouts XML, utilizando componentes visuales modernos como CardView y RecyclerView (gestionados dinámicamente por NoteAdapter.kt) para renderizar las tarjetas de notas. El flujo inicia en la pantalla de acceso (MainActivity.kt), permitiendo la navegación fluida hacia los formularios de registro, recuperación de credenciales modificables en tiempo de ejecución, panel principal o Dashboard (NotesDashboardActivity.kt), y la vista detallada de los registros.
+* Interfaz de Administrador (System Administration): Dado el enfoque de arquitectura local y de privacidad de la aplicación, el rol de administración no reside en un panel web externo expuesto a vectores de ataque, sino que se encuentra integrado de manera monolítica dentro de la lógica del sistema a través de la clase controladora DatabaseHelper.kt. Esta estructura otorga al usuario el control absoluto y local del entorno, actuando como el administrador directo de su propio diccionario de datos mediante operaciones CRUD securizadas que limpian e inicializan las tablas de usuarios y notas en el almacenamiento aislado de la aplicación.
+
+## Funcionalidad
+La solidez operativa del sistema se sustenta en el desacoplamiento de sus funciones lógicas y la gestión de eventos del sistema operativo:
+* Autenticación Completa: Módulo seguro de Login, Registro de nuevas cuentas locales y Recuperación reactiva de contraseña con validación de correo directo en SQLite.
+* Gestión de Notas (CRUD): Inserción, lectura analítica, edición de registros preexistentes y remoción física de notas con actualización dinámica de la interfaz gráfica.
+* Subsistema de Alertas Activas: Integración del componente AlarmReceiver.kt (derivado de BroadcastReceiver) que intercepta los eventos temporales del reloj de Android para despachar notificaciones emergentes en la barra de estado en tiempo real, incluso si la aplicación no está en primer plano.
+
+## Diseño (wireframes o esquemas de página)
+La arquitectura de pantallas mantiene una correlación directa entre las plantillas de maquetación XML y las clases lógicas de Kotlin, estructuradas de la siguiente manera:
+1. Acceso Principal: activity_main.xml conectado a MainActivity.kt.
+2. Creamiento de Cuentas: activity_register.xml conectado a RegisterActivity.kt.
+3. Restablecimiento: activity_forgot_password.xml conectado a ForgotPasswordActivity.kt.
+4. Panel General (Dashboard): activity_notes_dashboard.xml y tarjetas dinámicas item_note.xml, gestionados por NotesDashboardActivity.kt.
+5. Formulario de Captura: activity_note_form.xml conectado a NoteFormActivity.kt.
+6. Lectura y Detalle: activity_note_detail.xml conectado a NoteDetailActivity.kt.
 
 ## Estructura Física del Proyecto
 A continuación se detalla la organización jerárquica del repositorio local y la distribución de los componentes lógicos, recursos de diseño y evidencias de compilación que conforman el sistema:
@@ -68,23 +79,8 @@ A continuación se detalla la organización jerárquica del repositorio local y 
 ├── Documentacion/
 └── Recursos/
 ```
-
-## Flujo de Diseño y Navegación Real del Sistema
-1. **Pantalla de Login (Principal) (`MainActivity.kt` / `activity_main.xml`):** Actúa como el punto de acceso principal. Contiene los campos de usuario y contraseña, el botón de ingreso y el enlace hacia el registro. Si el usuario ingresa sus credenciales correctamente, pasa directo a la pantalla de notas. Si selecciona "Registro", se abre la pantalla de creación de cuenta. Tras el éxito, destruye el Login en memoria mediante `finish()` para evitar retrocesos inseguros.
-2. **Pantalla de Registro (`RegisterActivity.kt` / `activity_register.xml`):** Formulario para la creación de nuevas cuentas que solicita usuario, contraseña y correo electrónico. Una vez creado el usuario, regresa automáticamente a la pantalla principal de Login para iniciar sesión.
-3. **Pantalla de Recuperación (`ForgotPasswordActivity.kt` / `activity_forgot_password.xml`):** Interfaz adaptativa que valida el correo del usuario contra SQLite. Tras la confirmación, muta sus componentes gráficos en tiempo de ejecución para capturar la nueva contraseña local de forma directa.
-4. **Pantalla de Notas o Dashboard (`NotesDashboardActivity.kt` / `activity_notes_dashboard.xml`):** Panel secundario principal que renderiza de manera eficiente la lista de notas existentes mediante un `RecyclerView` alimentado por el adaptador personalizado `NoteAdapter.kt`. Contiene un botón "+" para crear una nueva nota y las opciones de editar y eliminar en cada registro.
-5. **Pantalla de Formulario (Crear/Editar nota) (`NoteFormActivity.kt` / `activity_note_form.xml`):** Interfaz de captura con los campos para título, contenido y fecha/hora del recordatorio. Al presionar el botón "Guardar", regresa automáticamente a la pantalla de Notas. Si se entra desde la acción "editar", el formulario carga los datos preexistentes de la nota seleccionada.
-6. **Pantalla de Detalle (`NoteDetailActivity.kt` / `activity_note_detail.xml`):** Vista de lectura aislada que recibe el identificador único de la nota para poblar los campos de texto correspondientes.
-
-## Funcionalidad e Implementación Técnica
-La robustez de la aplicación radica en el desacoplamiento de sus funciones de persistencia y el control estricto de eventos del sistema operativo:
-* **Crear Nota:** Inserción segura de registros en la tabla local de SQLite a través de controladores parametrizados.
-* **Editar Nota Existente:** Modificación reactiva del contenido indexado mediante consultas basadas en la clave primaria.
-* **Eliminar Nota:** Remoción física del registro en base de datos y actualización dinámica del adaptador gráfico.
-* **Configurar Recordatorio con Notificación:** Integración del componente `AlarmReceiver.kt` vinculado al gestor de alarmas nativo, lanzando una alerta emergente en la barra de estado cuando se cumple la fecha y hora seleccionada.
-
 ## Conclusión
-El proyecto final integra con éxito los aprendizajes de App Inventor, GitHub y Android Studio, consolidando de manera armónica la teoría y la práctica en un desarrollo alcanzable dentro de las metas del curso. La aplicación propuesta tiene un impacto directo en la vida académica de los estudiantes al ofrecer una solución práctica para la organización personal y el resguardo seguro de datos locales. Refuerza competencias críticas en programación orientada a objetos con Kotlin, diseño de interfaces gráficas adaptativas y gestión de proyectos bajo el principio de Defensa en Profundidad, promoviendo la transparencia y la responsabilidad ética en la construcción colectiva de software.
+La culminación de MindKeep demuestra que es viable integrar metodologías de diseño visual y desarrollo nativo orientado a objetos bajo estándares académicos rigorosos. La adopción de un modelo relacional local y el control estricto del ciclo de vida de las actividades resuelven de forma contundente la problemática expuesta, sentando las bases para proyectos a gran escala fundamentados en el principio de Defensa en Profundidad. La transparencia en la documentación de este repositorio refleja un compromiso ético ineludible con la calidad del software, la responsabilidad técnica y la libre construcción colectiva del conocimiento en beneficio del progreso de la ingeniería de sistemas.
+
 
 
