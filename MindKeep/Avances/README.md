@@ -39,9 +39,22 @@ Este archivo registra el progreso histórico, las mejoras aplicadas sobre el có
 * **Transferencia Segura de Datos:** Inyección de la clave primaria mediante `intent.getIntExtra("NOTE_ID", -1)` para realizar consultas parametrizadas en la base de datos local y poblar la vista de detalle.
 * **Registro en Manifiesto:** Declaración formal de la actividad con el atributo `exported="false"` para salvaguardar la ejecución interna de la pantalla.
 
-### Entregables y Control de Evidencias
-* **Capturas de Evolución:** Se anexan a las evidencias previas los registros gráficos del Dashboard dinámico y la interfaz funcional de visualización de notas.
-* **Binario Funcional Actualizado:** `MindKeep_Modulo_Acceso_V2.apk` - Paquete distribuible que unifica la persistencia de datos local y la navegación del módulo Maestro-Detalle completamente estabilizada.
+---
 
+## Hito 3: Sincronización Arquitectural, Alarmas Nativas y Mutación de Interfaces (Fase Final)
+
+#### 🔹 Subsistema de Alertas y Notificaciones (22 de Junio de 2026)
+* **Integración del Kernel de Android:** Implementación del componente `AlarmReceiver.kt` heredando de `BroadcastReceiver` para interceptar alarmas del sistema en segundo plano.
+* **Canales de Notificación Nativos:** Configuración del controlador de alertas mediante `NotificationCompat.Builder` para el despacho de avisos dinámicos en tiempo real con prioridad adaptativa.
+* **Persistencia Temporal:** Acoplamiento de la fecha y hora de la nota con el planificador local del dispositivo para activar los recordatorios de manera asíncrona.
+
+#### 🔹 Unificación de SQLite y Flujo de Recuperación Dinámica (23 de Junio de 2026)
+* **Resolución de Conflictos Sintácticos:** Consolidación y reestructuración del esquema relacional en `DatabaseHelper.kt` para unificar firmas de métodos y parámetros entre actividades, erradicando los errores de compilación (`Unresolved reference` / `No value passed for parameter`).
+* **Mutación Guiada por Estados:** Refactorización total de `ForgotPasswordActivity.kt` introduciendo la bandera lógica `isUserVerified`. El formulario transmuta dinámicamente en tiempo de ejecución (cambiando hints, tipos de entrada y textos de botones) para permitir la sobreescritura de credenciales local sin salir de la misma pantalla.
+* **Protocolo de Resiliencia de Datos:** Implementación de rutinas de borrado de almacenamiento físico y caché en el entorno de pruebas para purgar esquemas obsoletos y forzar el aprovisionamiento limpio de tablas relacionales.
+
+### Entregables y Control de Evidencias Finales
+* **Capturas de Evolución:** Se incorporan los registros gráficos de la interfaz mutando con éxito ("Ingresa tu nueva contraseña"), las alertas del sistema operando y la consola de Git sincronizada limpiamente.
+* **Binario Ejecutable Definitivo:** `app-debug.apk` - Paquete binario compilado y firmado de forma local que unifica el control de accesos, el CRUD completo de notas de usuario, las alertas nativas y la persistencia relacional blindada en el almacenamiento del dispositivo.
 
 
