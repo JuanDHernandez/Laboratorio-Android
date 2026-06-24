@@ -13,25 +13,25 @@ En el escenario académico y profesional contemporáneo, los usuarios se enfrent
 * Compatibilidad: Emulador AVD (Android Virtual Device) y terminales físicos en modo de depuración.
 
 ## Interfaz de usuario e interfaz de administrador
-* Interfaz de Usuario (Client-Side): Diseñada de forma adaptativa a través de layouts .xml, utilizando componentes lógicos para renderizar las interfaces y facilitar la navegación fluida. El flujo inicia en la pantalla de acceso (MainActivity.kt), permitiendo el enrutamiento hacia los formularios de registro, recuperación de credenciales, panel general (NotesDashboardActivity.kt) y la vista detallada de las notas.
-* Interfaz de Administrador (System Administration): Dado el enfoque de arquitectura local de la aplicación, el rol de administración se encuentra integrado de manera segura dentro de los controladores lógicos del sistema a través de la clase DatabaseHelper.kt. Esta estructura otorga al usuario el control directo de su propia base de datos, actuando como el administrador local de su diccionario de datos mediante operaciones de actualización y mantenimiento interno en el almacenamiento aislado de la aplicación.
+* Interfaz de Usuario (Client-Side): Diseñada de forma adaptativa a través de `layouts .xml`, utilizando componentes lógicos para renderizar las interfaces y facilitar la navegación fluida. El flujo inicia en la pantalla de acceso (`MainActivity.kt`), permitiendo el enrutamiento hacia los formularios de registro, recuperación de credenciales, panel general (`NotesDashboardActivity.kt`) y la vista detallada de las notas.
+* Interfaz de Administrador (System Administration): Dado el enfoque de arquitectura local de la aplicación, el rol de administración se encuentra integrado de manera segura dentro de los controladores lógicos del sistema a través de la clase `DatabaseHelper.kt`. Esta estructura otorga al usuario el control directo de su propia base de datos, actuando como el administrador local de su diccionario de datos mediante operaciones de actualización y mantenimiento interno en el almacenamiento aislado de la aplicación.
 
 ## Flujo de Diseño y Navegación
-1. Pantalla de Login (Principal) (MainActivity.kt / activity_main.xml):
+1. Pantalla de Login (Principal) (`MainActivity.kt` / `activity_main.xml`):
     * Contiene el campo de usuario, campo de contraseña, botón Login y botón Registro.
     * Si el usuario ingresa sus credenciales correctamente, pasa directo a la pantalla de notas.
     * Si selecciona Registro, se abre la pantalla de creación de cuenta.
-2. Pantalla de Registro (RegisterActivity.kt / activity_register.xml):
+2. Pantalla de Registro (`RegisterActivity.kt` / `activity_register.xml`):
     * Incluye los campos de usuario, contraseña y correo electrónico junto al botón Registrar.
-    * Una vez creado el usuario, regresa automáticamente a la pantalla principal de MainActivity.kt para iniciar sesión.
-3. Pantalla de Notas o Dashboard (NotesDashboardActivity.kt / activity_notes_dashboard.xml):
-    * Renderiza la lista de notas existentes mediante un componente dinámico alimentado por el adaptador NoteAdapter.kt.
+    * Una vez creado el usuario, regresa automáticamente a la pantalla principal de `MainActivity.kt` para iniciar sesión.
+3. Pantalla de Notas o Dashboard (`NotesDashboardActivity.kt` / `activity_notes_dashboard.xml`):
+    * Renderiza la lista de notas existentes mediante un componente dinámico alimentado por el adaptador `NoteAdapter.kt`.
     * Proporciona un botón "+" para crear una nueva nota y las opciones de editar y eliminar en cada registro.
-4. Pantalla de Formulario (Crear/Editar nota) (NoteFormActivity.kt / activity_note_form.xml):
+4. Pantalla de Formulario (Crear/Editar nota) (`NoteFormActivity.kt` / `activity_note_form.xml`):
     * Campos de captura para título, contenido y fecha/hora del recordatorio.
     * Al presionar el botón Guardar, regresa automáticamente a la pantalla de Notas.
     * Si se entra desde la acción "editar", el formulario carga los datos preexistentes de la nota seleccionada.
-5. Subsistema de Notificaciones (AlarmReceiver.kt):
+5. Subsistema de Notificaciones (`AlarmReceiver.kt`):
     * Despacha una alerta emergente en la barra de estado del sistema operativo cuando se cumple el tiempo asignado a un recordatorio.
 
 ## Funcionalidad
