@@ -2,6 +2,7 @@ package com.example.mindkeep
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -11,110 +12,132 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val DATABASE_NAME = "MindKeep.db"
         private const val DATABASE_VERSION = 1
 
-        // Tabla Usuarios
+        // Estructura limpia y acoplada a tus pantallas de Login y Registro
         const val TABLE_USERS = "usuarios"
-        const val COL_USER_ID = "id"
-        const val COL_USER_NAME = "username"
-        const val COL_USER_PASSWORD = "password"
+        const val COL_USER_ID = "id_usuario"
+        const val COL_EMAIL = "email"
+        const val COL_PASSWORD = "password"
 
-        // Tabla Notas
         const val TABLE_NOTES = "notas"
-        const val COL_NOTE_ID = "id"
-        const val COL_NOTE_USER_REF = "usuario_id"
+        const val COL_NOTE_ID = "id_nota"
+        const val COL_NOTE_USER_ID = "id_usuario_nota"
         const val COL_NOTE_TITLE = "titulo"
         const val COL_NOTE_CONTENT = "contenido"
-        const val COL_NOTE_DATE = "fecha_creacion"
+        const val COL_NOTE_DATE = "fecha"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         val createUsersTable = ("CREATE TABLE " + TABLE_USERS + "("
                 + COL_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COL_USER_NAME + " TEXT UNIQUE,"
-                + COL_USER_PASSWORD + " TEXT" + ")")
+                + COL_EMAIL + " TEXT,"
+                + COL_PASSWORD + " TEXT" + ")")
+        db.execSQL(createUsersTable)
 
         val createNotesTable = ("CREATE TABLE " + TABLE_NOTES + "("
                 + COL_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COL_NOTE_USER_REF + " INTEGER,"
+                + COL_NOTE_USER_ID + " INTEGER,"
                 + COL_NOTE_TITLE + " TEXT,"
                 + COL_NOTE_CONTENT + " TEXT,"
                 + COL_NOTE_DATE + " TEXT,"
-                + "FOREIGN KEY(" + COL_NOTE_USER_REF + ") REFERENCES " + TABLE_USERS + "(" + COL_USER_ID + ")" + ")")
-
-        db.execSQL(createUsersTable)
+                + "FOREIGN KEY(" + COL_NOTE_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COL_USER_ID + "))")
         db.execSQL(createNotesTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_NOTES")
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES)
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS)
         onCreate(db)
     }
 
-    // Método para registrar un nuevo usuario en la base de datos
-    fun insertUser(usernameInput: String, passwordInput: String): Long {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(COL_USER_NAME, usernameInput)
-        values.put(COL_USER_PASSWORD, passwordInput)
+    // --- MÉTODOS DE USUARIOS ---
 
-        val result = db.insert(TABLE_USERS, null, values)
-        db.close()
-        return result
+    fun insertUser(username: String, email: String): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COL_EMAIL, username)
+            put(COL_PASSWORD, email)
+        }
+        return db.insert(TABLE_USERS, null, values)
     }
 
-    // Método para validar si las credenciales de inicio de sesión son correctas
-    fun checkUser(usernameInput: String, passwordInput: String): Boolean {
+    fun checkUser(username: String, passwordString: String): Boolean {
         val db = this.readableDatabase
-        val columns = arrayOf(COL_USER_ID)
-        val selection = "$COL_USER_NAME = ? AND $COL_USER_PASSWORD = ?"
-        val selectionArgs = arrayOf(usernameInput, passwordInput)
-
         val cursor = db.query(
             TABLE_USERS,
-            columns,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            null
+            arrayOf(COL_USER_ID),
+            "$COL_EMAIL = ? AND $COL_PASSWORD = ?",
+            arrayOf(username, passwordString),
+            null, null, null
+        )
+        val exists = cursor.count > 0
+        cursor.close()
+        return exists
+    }
+
+    fun getUserId(usernameOrEmail: String): Int {
+        val db = this.readableDatabase
+        var userId = -1
+        val cursor = db.query(
+            TABLE_USERS,
+            arrayOf(COL_USER_ID),
+            "$COL_EMAIL = ?",
+            arrayOf(usernameOrEmail),
+            null, null, null
         )
 
-        val count = cursor.count
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_USER_ID))
+        }
         cursor.close()
-        db.close()
-
-        return count > 0
+        return userId
     }
 
-    // Método para insertar una nueva nota asociada a un usuario específico
+    fun updatePassword(userId: Int, newPasswordString: String): Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues().apply {
+            put(COL_PASSWORD, newPasswordString)
+        }
+        val result = db.update(TABLE_USERS, contentValues, "$COL_USER_ID = ?", arrayOf(userId.toString()))
+        return result > 0
+    }
+
+    // --- MÉTODOS DE NOTAS ---
+
     fun insertNote(userId: Int, title: String, content: String, date: String): Long {
         val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(COL_NOTE_USER_REF, userId)
-        values.put(COL_NOTE_TITLE, title)
-        values.put(COL_NOTE_CONTENT, content)
-        values.put(COL_NOTE_DATE, date)
-
-        val result = db.insert(TABLE_NOTES, null, values)
-        db.close()
-        return result
+        val values = ContentValues().apply {
+            put(COL_NOTE_USER_ID, userId)
+            put(COL_NOTE_TITLE, title)
+            put(COL_NOTE_CONTENT, content)
+            put(COL_NOTE_DATE, date)
+        }
+        return db.insert(TABLE_NOTES, null, values)
     }
 
-    // Método para obtener todas las notas de un usuario específico
-    fun getUserNotes(userId: Int): android.database.Cursor {
+    fun getUserNotes(userId: Int): Cursor {
         val db = this.readableDatabase
-        val selection = "$COL_NOTE_USER_REF = ?"
-        val selectionArgs = arrayOf(userId.toString())
-
-        // Retorna el cursor con todas las filas encontradas ordenadas por ID descendente
         return db.query(
             TABLE_NOTES,
             null,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            "$COL_NOTE_ID DESC"
+            "$COL_NOTE_USER_ID = ?",
+            arrayOf(userId.toString()),
+            null, null, "$COL_NOTE_ID DESC"
         )
+    }
+
+    fun updateNote(noteId: Int, title: String, content: String): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COL_NOTE_TITLE, title)
+            put(COL_NOTE_CONTENT, content)
+        }
+        val result = db.update(TABLE_NOTES, values, "$COL_NOTE_ID = ?", arrayOf(noteId.toString()))
+        return result > 0
+    }
+
+    fun deleteNote(noteId: Int): Boolean {
+        val db = this.writableDatabase
+        val result = db.delete(TABLE_NOTES, "$COL_NOTE_ID = ?", arrayOf(noteId.toString()))
+        return result > 0
     }
 }

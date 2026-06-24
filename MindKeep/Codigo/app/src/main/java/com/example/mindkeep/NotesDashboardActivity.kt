@@ -7,18 +7,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.jvm.java
 
 class NotesDashboardActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var recyclerView: RecyclerView
+    private var currentUserId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes_dashboard)
 
         dbHelper = DatabaseHelper(this)
+
+        // Recuperar el ID enviado desde el Login
+        currentUserId = intent.getIntExtra("USER_ID", -1)
 
         val fabAdd = findViewById<FloatingActionButton>(R.id.fabAddNote)
         val textSalir = findViewById<TextView>(R.id.lblSalir)
@@ -27,6 +30,7 @@ class NotesDashboardActivity : AppCompatActivity() {
 
         fabAdd.setOnClickListener {
             val intent = Intent(this, NoteFormActivity::class.java)
+            intent.putExtra("USER_ID", currentUserId)
             startActivity(intent)
         }
 
@@ -46,7 +50,9 @@ class NotesDashboardActivity : AppCompatActivity() {
     }
 
     private fun loadNotes() {
-        val cursor = dbHelper.getUserNotes(1)
+        if (currentUserId == -1) return
+
+        val cursor = dbHelper.getUserNotes(currentUserId)
         val noteList = mutableListOf<Note>()
 
         if (cursor.moveToFirst()) {
@@ -61,7 +67,6 @@ class NotesDashboardActivity : AppCompatActivity() {
         cursor.close()
 
         val adapter = NoteAdapter(noteList) { note ->
-            // Aquí es donde llamamos a la otra pantalla
             val intent = Intent(this, NoteDetailActivity::class.java)
             intent.putExtra("NOTE_ID", note.id)
             startActivity(intent)
