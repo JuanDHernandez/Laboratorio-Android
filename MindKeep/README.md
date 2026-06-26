@@ -41,6 +41,12 @@ La solidez operativa del sistema se sustenta en las siguientes capacidades lógi
 * Eliminar nota: Remoción física del registro y refresco dinámico de la interfaz gráfica.
 * Configurar recordatorio con notificación: Enrutamiento de eventos temporales para lanzar alertas en la barra de estado.
 
+## Presentación del Proyecto
+El archivo oficial de la presentación para la exposición ante el inversor/profesor se encuentra disponible en formato `.pptx` para su descarga y revisión:
+
+*   **Archivo:** `Documentacion/App_Presentacion.pptx`
+
+ 
 ## Estructura Física del Proyecto
 A continuación se detalla la organización jerárquica del repositorio local y la distribución de los componentes lógicos, recursos de diseño y evidencias de compilación que conforman el sistema:
 
@@ -88,6 +94,7 @@ A continuación se detalla la organización jerárquica del repositorio local y 
 │                   ├── activity_register.xml
 │                   └── item_note.xml
 ├── Documentacion/
+│   └── App_Presentacion.pptx      
 └── Recursos/
 ```
 
